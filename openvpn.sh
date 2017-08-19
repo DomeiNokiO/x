@@ -41,7 +41,7 @@ fi
 #if [[ $vps = "zvur" ]]; then
 	
 
-	source="https://raw.githubusercontent.com/yusuf-ardiansyah/x"
+	source="https://raw.githubusercontent.com/SuroDiwiryo/x"
 #fi
 
 geteasyrsa () {
@@ -117,12 +117,12 @@ else
 	read -p "IP address: " -e -i $IP IP
 	#echo ""
 	#echo "Port berapa yang Anda inginkan untuk OpenVPN?"
-	#read -p "Port: " -e -i 1194 PORT
-	PORT="1194";
+	read -p "Port: " -e -i 5555 PORT
+	#PORT="1194";
 	echo ""
-	#echo "Apakah Anda ingin OpenVPN akan tersedia di port 53 juga?"
-	#echo "Hal ini dapat berguna untuk menghubungkan jaringan yang benar-benar ketat"
-	#read -p "Listen port 53 [y/n]: " -e -i n ALTPORT
+	echo "Apakah Anda ingin OpenVPN akan tersedia di port 53 juga?"
+	echo "Hal ini dapat berguna untuk menghubungkan jaringan yang benar-benar ketat"
+	read -p "Listen port 53 [y/n]: " -e -i n ALTPORT
 	#echo ""
 	echo "TCP atau UDP server?"
 	echo "   1) TCP server"
@@ -143,10 +143,10 @@ else
 	echo "   7) Yandex"
 	read -p "DNS [1-7]: " -e -i 3 DNS
 	echo ""
-	#echo "Terakhir, sebutkan nama untuk cert klien"
-	#echo "Tolong, gunakan satu kata saja, tidak ada karakter khusus"
-	#read -p "Nama Client: " -e -i client CLIENT
-	CLIENT="client"
+	echo "Terakhir, sebutkan nama untuk cert klien"
+	echo "Tolong, gunakan satu kata saja, tidak ada karakter khusus"
+	read -p "Nama Client: " -e -i client CLIENT
+	#CLIENT="client"
 	echo ""
 	echo "Oke, itu semua saya butuhkan. Kami siap untuk setup OpenVPN server Anda sekarang"
 	read -n1 -r -p "Tekan sembarang tombol untuk melanjutkan..."
@@ -274,10 +274,10 @@ END
 		sed -i 's|;push "dhcp-option DNS 208.67.220.220"|push "dhcp-option DNS 77.88.8.1"|' server.conf
 		;;
 	esac
-	# Listen at port 53 too if user wants that
-	#if [[ "$ALTPORT" = 'y' ]]; then
-		#sed -i '/port 1194/a port 53' server.conf
-	#fi
+		# Listen at port 53 too if user wants that
+	if [[ "$ALTPORT" = 'y' ]]; then
+		sed -i '/port 1194/a port 53' server.conf
+	fi
 	# Enable net.ipv4.ip_forward for the system
 	if [[ "$OS" = 'debian' ]]; then
 		sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
